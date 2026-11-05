@@ -557,3 +557,121 @@ h1, h2, h3, p { margin: 0; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Workbook areas: structured records rather than a wide spreadsheet on mobile. */
+.area-intro { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 20px; margin-bottom: 16px; background: #dcecf1; border: 1px solid #d0e2e8; border-radius: 12px; }
+.area-intro > div { display: flex; align-items: center; gap: 11px; }
+.area-intro-icon, .area-icon { display: grid; place-items: center; flex: none; width: 43px; height: 43px; border-radius: 11px; background: #c6e3ee; color: #245d85; }
+.area-intro strong { color: #163b50; font-size: 12px; }
+.area-intro p { color: #526878; font-size: 11px; margin-top: 3px; }
+.area-intro > span { color: #526878; font-size: 9px; letter-spacing: .1em; font-weight: 800; white-space: nowrap; }
+.area-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.area-card { min-width: 0; display: flex; align-items: flex-start; gap: 13px; padding: 19px; text-align: left; color: #183a4d; transition: border-color .18s, transform .18s, box-shadow .18s; }
+.area-card:hover { border-color: #9bbecd; transform: translateY(-2px); box-shadow: 0 10px 25px rgba(8,28,48,.08); }
+.area-tone-1 { color: #2e48a1; background: #e8edfb; }
+.area-tone-2 { color: #126e85; background: #dff4f2; }
+.area-tone-3 { color: #246083; background: #e2f2f8; }
+.area-card-copy { min-width: 0; display: flex; flex: 1; flex-direction: column; gap: 7px; }
+.area-card-copy strong { font-size: 14px; font-weight: 750; line-height: 1.25; }
+.area-card-copy small { min-height: 31px; color: #526878; font-size: 11px; line-height: 1.4; }
+.area-card-copy em { color: #365e74; font-size: 9px; font-style: normal; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; }
+.area-arrow { color: #94acb8; margin-top: 3px; }
+.area-back { display: inline-flex; align-items: center; gap: 6px; padding: 0; border: 0; background: none; color: #2e48a1; font-size: 11px; font-weight: 800; margin-bottom: 18px; }
+.area-back:hover { color: #081c30; }
+.module-context { display: flex; align-items: flex-start; gap: 10px; padding: 12px 15px; margin-bottom: 16px; border: 1px solid #cfe3e8; border-radius: 9px; background: #e6f3f4; color: #31586a; font-size: 11.5px; line-height: 1.5; }
+.module-context > span { color: #237b97; font-size: 16px; line-height: 1; }
+.formula-notice { line-height: 1.5; }
+.module-list { overflow: hidden; }
+.module-list-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 19px 21px; border-bottom: 1px solid #eaf1f3; }
+.module-list-top strong { color: #17394c; font-size: 13px; }
+.module-list-top p { margin-top: 3px; color: #526878; font-size: 11px; }
+.module-search { flex: 0 1 245px; }
+.record-row { display: flex; align-items: flex-start; gap: 12px; width: 100%; padding: 16px 21px; text-align: left; background: #fff; border: 0; border-bottom: 1px solid #eaf1f3; }
+.record-row:last-child { border-bottom: 0; }
+.record-row:hover { background: #f6fafb; }
+.record-row-icon { display: grid; place-items: center; flex: none; width: 34px; height: 34px; border-radius: 9px; background: #e9f3f7; color: #2e6890; }
+.record-row-content { min-width: 0; display: flex; flex: 1; flex-direction: column; gap: 6px; }
+.record-row-content > strong { font-size: 12.5px; line-height: 1.35; overflow-wrap: anywhere; }
+.record-metadata { display: flex; flex-wrap: wrap; gap: 5px 13px; color: #526878; font-size: 10.5px; line-height: 1.4; }
+.record-metadata b { color: #315568; font-weight: 700; overflow-wrap: anywhere; }
+.record-arrow { flex: none; margin-top: 8px; color: #8ea9b5; }
+.critical-risk { align-self: flex-start; padding: 4px 8px; color: #8a3548; background: #fff0f2; border-radius: 5px; font-size: 10px; font-weight: 800; }
+.criteria-panel { padding: 18px 20px; margin-bottom: 16px; }
+.criteria-panel h2, .guide-section h2 { font-size: 15px; letter-spacing: -.03em; }
+.criteria-panel > p { margin-top: 4px; color: #526878; font-size: 11px; }
+.criteria-grid { display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 10px; margin-top: 14px; }
+.criteria-grid article { min-width: 0; padding: 12px; border-radius: 9px; background: #f2f7f9; }
+.criteria-grid article > div { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; }
+.criteria-grid strong { font-size: 10.5px; line-height: 1.3; }
+.criteria-grid b { color: #2e48a1; font-size: 11px; }
+.criteria-grid p { margin-top: 8px; color: #526878; font-size: 10px; line-height: 1.45; }
+.guide-sections { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 15px; }
+.guide-section { padding: 20px; }
+.guide-section:first-child { grid-row: span 2; }
+.guide-section h2 { padding-bottom: 11px; border-bottom: 1px solid #e6eef1; }
+.guide-entry { padding: 12px 0; border-bottom: 1px solid #edf2f4; }
+.guide-entry:last-child { border-bottom: 0; padding-bottom: 0; }
+.guide-entry strong { font-size: 11.5px; }
+.guide-entry p { margin-top: 4px; color: #526878; font-size: 11px; line-height: 1.5; }
+.module-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 14px; }
+.module-form-grid .form-wide { grid-column: 1 / -1; }
+.manual-confirm { display: flex; align-items: flex-start; gap: 10px; padding: 12px; margin: 2px 0 16px; border: 1px solid #efddc7; border-radius: 8px; background: #fff8ed; color: #694e30; font-size: 11px; line-height: 1.5; }
+.manual-confirm input { width: 17px; height: 17px; margin: 1px 0 0; flex: none; accent-color: #2e48a1; }
+.record-delete { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; padding-top: 12px; border-top: 1px solid #eaf1f3; }
+.record-delete button { display: inline-flex; align-items: center; gap: 6px; padding: 5px 0; border: 0; background: none; color: #9a3e50; font-size: 11px; font-weight: 800; }
+.record-delete small { color: #526878; font-size: 10px; }
+@media (max-width: 1000px) {
+  .area-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .criteria-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 620px) {
+  .area-intro > span { display: none; }
+  .area-card { padding: 15px; }
+  .area-card-copy small { min-height: 0; }
+  .module-list-top { align-items: flex-start; flex-direction: column; padding: 16px; }
+  .module-search { flex: none; width: 100%; }
+  .record-row { padding: 16px; }
+  .guide-sections { grid-template-columns: 1fr; }
+  .guide-section:first-child { grid-row: auto; }
+}
+@media (max-width: 420px) {
+  .nav-item { padding: 0 5px; font-size: 10.5px; }
+  .area-grid, .criteria-grid, .module-form-grid { grid-template-columns: 1fr; }
+  .module-form-grid .form-wide { grid-column: auto; }
+  .page-heading { flex-wrap: wrap; }
+}
+@media (max-width: 360px) {
+  .nav-item { padding-left: 4px; padding-right: 4px; }
+}
+/* With five navigation entries, switch the header to two rows a little earlier. */
+@media (min-width: 821px) and (max-width: 880px) {
+  .topbar { padding: 15px 20px 0; gap: 0; flex-wrap: wrap; }
+  .top-brand { flex: 1; }
+  .topbar-right { gap: 8px; }
+  .top-nav { order: 3; width: 100%; margin: 10px 0 0; overflow-x: auto; scrollbar-width: none; }
+  .top-nav::-webkit-scrollbar { display: none; }
+  .nav-item { flex: 1 0 auto; height: 44px; padding: 0 11px; gap: 6px; font-size: 11.5px; }
+  .nav-item svg { display: block; }
+  .nav-item.active::after { bottom: 0; }
+}
+.workbook-overview { padding: 20px; margin-top: 16px; }
+.workbook-metrics { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 10px; margin-top: 15px; }
+.workbook-metrics button { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; padding: 13px; border: 0; border-radius: 9px; background: #f2f7f9; text-align: left; }
+.workbook-metrics button:hover { background: #e5f1f5; }
+.workbook-metrics button span { padding-right: 16px; color: #526878; font-size: 10.5px; }
+.workbook-metrics button strong { color: #183a4d; font-size: 21px; line-height: 1; }
+.workbook-metrics button svg { position: absolute; right: 11px; top: 12px; color: #60899b; }
+.workbook-metrics-note { color: #526878; font-size: 10.5px; line-height: 1.5; margin-top: 12px; }
+@media (max-width: 620px) { .workbook-metrics { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+.computed-warning { padding: 8px 10px; margin: -6px 0 15px; border: 1px solid #efddc7; border-radius: 7px; background: #fff8ed; color: #795934; font-size: 10.5px; line-height: 1.45; }
+.monthly-expense-card { margin-top: 14px; border: 1px solid #d4e6e8; border-radius: 11px; background: #f2f9f8; }
+.monthly-expense-main { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 15px; }
+.monthly-expense-label { display: flex; align-items: center; gap: 11px; min-width: 0; }
+.monthly-expense-icon { display: grid; place-items: center; width: 39px; height: 39px; flex: none; border-radius: 10px; background: #d9efeb; color: #176d62; }
+.monthly-expense-label h3 { color: #183a4d; font-size: 12px; line-height: 1.3; }
+.monthly-expense-label p { margin-top: 4px; color: #526878; font-size: 10.5px; line-height: 1.45; }
+.monthly-expense-value { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 0; }
+.monthly-expense-value strong { color: #173e45; font-size: 22px; line-height: 1.15; letter-spacing: -.04em; overflow-wrap: anywhere; text-align: right; }
+.monthly-expense-warning { display: flex; align-items: flex-start; gap: 8px; padding: 10px 15px; border-top: 1px solid #efddc7; background: #fff8ed; color: #795934; font-size: 10.5px; line-height: 1.5; border-radius: 0 0 10px 10px; }
+.monthly-expense-warning p + p { margin-top: 5px; }
+@media (max-width: 480px) { .monthly-expense-main { align-items: flex-start; flex-direction: column; } .monthly-expense-value { width: 100%; flex-direction: row; justify-content: space-between; align-items: center; } .monthly-expense-value strong { text-align: left; } }

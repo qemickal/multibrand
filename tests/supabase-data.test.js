@@ -29,3 +29,15 @@ test('sin conteo explícito utiliza el tamaño recibido para detectar la última
   const client = mockClient(({ from, to }) => ({ data: rows.slice(from, to + 1), error: null, count: null }))
   assert.deepEqual(await fetchAll(client, 'tareas', 2), rows)
 })
+
+test('si falta solo la nueva tabla, conserva disponibles las áreas anteriores', async () => {
+  const { fetchWorkbookRecords } = await import('../src/lib/supabase-data.js')
+  const missing = mockClient(() => ({ data: null, error: { code: 'PGRST205' }, count: null }))
+  assert.deepEqual(await fetchWorkbookRecords(missing), { records: [], ready: false })
+  const denied = { code: '42501', message: 'Permiso denegado' }
+  await assert.rejects(fetchWorkbookRecords(mockClient(() => ({ data: null, error: denied, count: null }))), error => error === denied)
+  const invalid = mockClient(() => ({ data: [{ id: '1', modulo: 'costeo', campos: null }], error: null, count: 1 }))
+  await assert.rejects(fetchWorkbookRecords(invalid), /incompletos/)
+  const valid = mockClient(() => ({ data: [{ id: '1', modulo: 'costeo', campos: { sku: 'X' } }], error: null, count: 1 }))
+  assert.deepEqual(await fetchWorkbookRecords(valid), { records: [{ id: '1', modulo: 'costeo', campos: { sku: 'X' } }], ready: true })
+})

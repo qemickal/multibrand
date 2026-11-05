@@ -1,5 +1,7 @@
-import { AlertTriangle, ArrowRight, ArrowUpRight, Check, CircleDot, ClipboardList, Lightbulb, Plus, Sparkles } from 'lucide-react'
+import { AlertTriangle, ArrowRight, ArrowUpRight, Check, CircleDot, ClipboardList, Lightbulb, Plus, Sparkles, Wallet } from 'lucide-react'
 import { brandAlertLabels, brandPresentation, brandStats, focusTasks, formatDate, isOverdue, RISK_STATUSES, statusCounts, TASK_STATUSES, workspaceMetrics } from '../lib/workspace.js'
+import { formatVariableCost } from '../lib/costeo.js'
+import { calculateMonthlyExpenseTotal } from '../lib/gastos.js'
 import { BrandAvatar, DataNotice, PageHeader, ProgressBar, StatusBadge, TextLink } from './common.jsx'
 
 function StatusChart({ tasks, onNavigate }) {
@@ -15,7 +17,7 @@ function StatusChart({ tasks, onNavigate }) {
   </div>
 }
 
-export default function Dashboard({ data, local, online, onNavigate, onOpenTask, onNewTask }) {
+export default function Dashboard({ data, local, online, schemaReady, onNavigate, onOpenTask, onNewTask }) {
   const { marcas, tareas, riesgos } = data
   const metrics = workspaceMetrics(tareas, riesgos)
   const brands = brandStats(marcas, tareas)
@@ -23,6 +25,16 @@ export default function Dashboard({ data, local, online, onNavigate, onOpenTask,
   const findBrand = name => marcas.find(brand => brand.nombre === name) || { nombre: name }
   const riskCounts = statusCounts(riesgos, RISK_STATUSES)
   const riskLabels = { Abierto: 'Abiertos', Mitigado: 'Mitigados', Cerrado: 'Cerrados' }
+  const records = data.registros || []
+  const products = records.filter(record => record.modulo === 'productos')
+  const monthlyExpenses = calculateMonthlyExpenseTotal(records)
+  const monthlyAmount = monthlyExpenses.value === null ? 'No disponible' : `${monthlyExpenses.value < 0 ? '-$' : '$'}${formatVariableCost(Math.abs(monthlyExpenses.value))}`
+  const workbookCards = [
+    { label: 'Productos en catálogo', value: products.length, area: 'productos' },
+    { label: 'Productos con SKU', value: products.filter(record => String(record.campos?.sku || '').trim()).length, area: 'productos' },
+    { label: 'Costeos registrados', value: records.filter(record => record.modulo === 'costeo').length, area: 'costeo' },
+    { label: 'Gastos registrados', value: records.filter(record => record.modulo === 'gastos').length, area: 'gastos' },
+  ]
   const summaryCards = [
     { label: 'Tareas totales', value: metrics.total, note: 'Tu hoja de ruta', action: () => onNavigate('checklist') },
     { label: 'Completadas', value: metrics.done, note: 'Con estado hecho', action: () => onNavigate('checklist', { status: 'Hecho' }) },
@@ -79,5 +91,21 @@ export default function Dashboard({ data, local, online, onNavigate, onOpenTask,
         <div className="review-note"><Lightbulb size={16} /><p>El avance no autoriza automáticamente la apertura. Revisa prototipos, números, permisos y capacidad.</p></div>
       </section>
     </div>
+    {schemaReady && <section className="surface workbook-overview" aria-labelledby="workbook-overview-title">
+      <div className="section-heading"><div><span className="section-kicker">MÁS ALLÁ DEL CHECKLIST</span><h2 id="workbook-overview-title">Catálogo y finanzas</h2><p>Un vistazo a los registros de tus otras áreas.</p></div><TextLink onClick={() => onNavigate('sistema')}>Ver áreas</TextLink></div>
+      <div className="workbook-metrics">{workbookCards.map(card => <button type="button" key={card.label} onClick={() => onNavigate('sistema', { area: card.area })}><span>{card.label}</span><strong>{card.value}</strong><ArrowUpRight size={15} /></button>)}</div>
+      <section className="monthly-expense-card" aria-labelledby="monthly-expense-title">
+        <div className="monthly-expense-main">
+          <div className="monthly-expense-label"><span className="monthly-expense-icon"><Wallet size={19} aria-hidden="true" /></span><div><h3 id="monthly-expense-title">Gasto fijo mensual registrado</h3><p>{monthlyExpenses.count ? `${monthlyExpenses.count} ${monthlyExpenses.count === 1 ? 'gasto registrado' : 'gastos registrados'} · rango original: hasta 100` : 'Sin gastos registrados · rango original: hasta 100'}</p></div></div>
+          <div className="monthly-expense-value"><strong>{monthlyAmount}</strong><TextLink onClick={() => onNavigate('sistema', { area: 'gastos' })}>Revisar gastos</TextLink></div>
+        </div>
+        {(monthlyExpenses.error || monthlyExpenses.incomplete > 0 || monthlyExpenses.legacy > 0) && <div className="monthly-expense-warning" role="status"><AlertTriangle size={16} aria-hidden="true" /><div>
+          {monthlyExpenses.error && <p>{monthlyExpenses.error}</p>}
+          {monthlyExpenses.incomplete > 0 && <p>{monthlyExpenses.incomplete} {monthlyExpenses.incomplete === 1 ? 'gasto tiene' : 'gastos tienen'} importe o periodicidad faltante o no reconocida y {monthlyExpenses.incomplete === 1 ? 'aporta' : 'aportan'} $0 según la fórmula. Revisa los datos.</p>}
+          {monthlyExpenses.legacy > 0 && <p>En {monthlyExpenses.legacy} {monthlyExpenses.legacy === 1 ? 'gasto se recalcula el equivalente' : 'gastos se recalculan los equivalentes'}; los valores manuales anteriores no se usan en la suma.</p>}
+        </div></div>}
+      </section>
+      <p className="workbook-metrics-note">Costeo, gastos y el puntaje de priorización usan las fórmulas compartidas. La lectura de priorización y los resultados de punto de equilibrio siguen siendo manuales.</p>
+    </section>}
   </>
 }

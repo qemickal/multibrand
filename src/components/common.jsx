@@ -49,7 +49,7 @@ export function PageHeader({ eyebrow, title, description, action }) {
 export function DataNotice({ local, online }) {
   if (!online && !local) return <div className="data-notice warning" role="status"><CloudOff size={17} /><span><strong>Sin conexión.</strong> Los cambios en Supabase necesitan internet para guardarse.</span></div>
   if (!local) return null
-  return <div className="data-notice" role="status"><Info size={17} /><span><strong>Estás en modo local.</strong> Esta vista parte de los datos iniciales del proyecto; tus cambios se guardan solo en este navegador y no se sincronizan con el Excel ni con Supabase.</span></div>
+  return <div className="data-notice" role="status"><Info size={17} /><span><strong>Estás en modo local.</strong> Esta vista parte de los datos iniciales del proyecto; tus cambios se guardan solo en este navegador y dirección web; no se sincronizan con el Excel ni con Supabase.</span></div>
 }
 
 export function EmptyState({ title, description, action }) {

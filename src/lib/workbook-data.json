@@ -1,0 +1,975 @@
+{
+  "marcas": {
+    "MCC": {
+      "modelo_negocio": "B2B: diseño y producción gráfica impresa y digital",
+      "descriptor": "Creative Graphic Studio",
+      "promesa": "Del concepto al objeto; integrar diseño, producción y acabados.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    },
+    "SIM": {
+      "modelo_negocio": "B2C: productos propios y colecciones",
+      "descriptor": "Symbolic Objects & Divination",
+      "promesa": "Objetos gráficos y editoriales con universo simbólico y acabados cuidados.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    },
+    "EST": {
+      "modelo_negocio": "B2C + B2B: colecciones y personalización",
+      "descriptor": "Sticker Culture & Materials",
+      "promesa": "Stickers por estilo, material, acabado y aplicación.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    },
+    "CRN": {
+      "modelo_negocio": "B2C: productos, cápsulas y colaboraciones",
+      "descriptor": "Street Culture & Urban Goods",
+      "promesa": "Objetos y prendas conectados con cultura urbana y colaboraciones.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    },
+    "ICO": {
+      "modelo_negocio": "B2C: coleccionables y productos temáticos",
+      "descriptor": "Fandom Goods & Collectibles",
+      "promesa": "Coleccionables gráficos y objetos para comunidades de fans.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    },
+    "PER": {
+      "modelo_negocio": "B2C: souvenirs, gráfica y coleccionables",
+      "descriptor": "Mexico City Transit Culture",
+      "promesa": "Convertir la movilidad y la infraestructura urbana en cultura gráfica coleccionable.",
+      "estado": "En planeación",
+      "propuesta_valor": "",
+      "tono_voz": "",
+      "canal_principal": "",
+      "responsable": "",
+      "notas": ""
+    }
+  },
+  "alcanceTareas": {
+    "MAT-001": "Casa matriz",
+    "MAT-002": "Casa matriz",
+    "MAT-003": "Casa matriz",
+    "MAT-004": "Casa matriz",
+    "MAT-005": "Casa matriz",
+    "MAT-006": "Casa matriz",
+    "MAT-007": "Casa matriz",
+    "MAT-008": "Casa matriz",
+    "MAT-009": "Casa matriz",
+    "MAT-010": "Casa matriz",
+    "MAT-011": "Casa matriz",
+    "MAT-012": "Casa matriz",
+    "MAT-013": "Casa matriz",
+    "MAT-014": "Casa matriz",
+    "MAT-015": "Casa matriz",
+    "MAT-016": "Casa matriz",
+    "MAT-017": "Casa matriz",
+    "MAT-018": "Casa matriz",
+    "MAT-019": "Casa matriz",
+    "MAT-020": "Casa matriz",
+    "MAT-021": "Casa matriz",
+    "MAT-022": "Casa matriz",
+    "MAT-023": "Casa matriz",
+    "MAT-024": "Casa matriz",
+    "SIM-025": "Marca",
+    "SIM-026": "Marca",
+    "SIM-027": "Marca",
+    "SIM-028": "Marca",
+    "SIM-029": "Marca",
+    "SIM-030": "Marca",
+    "SIM-031": "Marca",
+    "SIM-032": "Marca",
+    "SIM-033": "Marca",
+    "SIM-034": "Marca",
+    "SIM-035": "Marca",
+    "SIM-036": "Marca",
+    "SIM-037": "Marca",
+    "SIM-038": "Marca",
+    "SIM-039": "Marca",
+    "SIM-040": "Marca",
+    "SIM-041": "Marca",
+    "SIM-042": "Marca",
+    "SIM-043": "Marca",
+    "SIM-044": "Marca",
+    "SIM-045": "Marca",
+    "SIM-046": "Marca",
+    "SIM-047": "Marca",
+    "EST-048": "Marca",
+    "EST-049": "Marca",
+    "EST-050": "Marca",
+    "EST-051": "Marca",
+    "EST-052": "Marca",
+    "EST-053": "Marca",
+    "EST-054": "Marca",
+    "EST-055": "Marca",
+    "EST-056": "Marca",
+    "EST-057": "Marca",
+    "EST-058": "Marca",
+    "EST-059": "Marca",
+    "EST-060": "Marca",
+    "EST-061": "Marca",
+    "EST-062": "Marca",
+    "EST-063": "Marca",
+    "EST-064": "Marca",
+    "EST-065": "Marca",
+    "EST-066": "Marca",
+    "EST-067": "Marca",
+    "EST-068": "Marca",
+    "EST-069": "Marca",
+    "EST-070": "Marca",
+    "CRN-071": "Marca",
+    "CRN-072": "Marca",
+    "CRN-073": "Marca",
+    "CRN-074": "Marca",
+    "CRN-075": "Marca",
+    "CRN-076": "Marca",
+    "CRN-077": "Marca",
+    "CRN-078": "Marca",
+    "CRN-079": "Marca",
+    "CRN-080": "Marca",
+    "CRN-081": "Marca",
+    "CRN-082": "Marca",
+    "CRN-083": "Marca",
+    "CRN-084": "Marca",
+    "CRN-085": "Marca",
+    "CRN-086": "Marca",
+    "CRN-087": "Marca",
+    "CRN-088": "Marca",
+    "CRN-089": "Marca",
+    "CRN-090": "Marca",
+    "CRN-091": "Marca",
+    "CRN-092": "Marca",
+    "CRN-093": "Marca",
+    "ICO-094": "Marca",
+    "ICO-095": "Marca",
+    "ICO-096": "Marca",
+    "ICO-097": "Marca",
+    "ICO-098": "Marca",
+    "ICO-099": "Marca",
+    "ICO-100": "Marca",
+    "ICO-101": "Marca",
+    "ICO-102": "Marca",
+    "ICO-103": "Marca",
+    "ICO-104": "Marca",
+    "ICO-105": "Marca",
+    "ICO-106": "Marca",
+    "ICO-107": "Marca",
+    "ICO-108": "Marca",
+    "ICO-109": "Marca",
+    "ICO-110": "Marca",
+    "ICO-111": "Marca",
+    "ICO-112": "Marca",
+    "ICO-113": "Marca",
+    "ICO-114": "Marca",
+    "ICO-115": "Marca",
+    "ICO-116": "Marca",
+    "PER-117": "Marca",
+    "PER-118": "Marca",
+    "PER-119": "Marca",
+    "PER-120": "Marca",
+    "PER-121": "Marca",
+    "PER-122": "Marca",
+    "PER-123": "Marca",
+    "PER-124": "Marca",
+    "PER-125": "Marca",
+    "PER-126": "Marca",
+    "PER-127": "Marca",
+    "PER-128": "Marca",
+    "PER-129": "Marca",
+    "PER-130": "Marca",
+    "PER-131": "Marca",
+    "PER-132": "Marca",
+    "PER-133": "Marca",
+    "PER-134": "Marca",
+    "PER-135": "Marca",
+    "PER-136": "Marca",
+    "PER-137": "Marca",
+    "PER-138": "Marca",
+    "PER-139": "Marca"
+  },
+  "registros": [
+    {
+      "id": "matriz:M-001",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-001",
+        "familia": "Diseño",
+        "servicio": "Identidad visual",
+        "descripcion": "Sistema de marca y aplicaciones",
+        "proceso": "Diseño digital / editorial",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-002",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-002",
+        "familia": "Diseño",
+        "servicio": "Diseño editorial",
+        "descripcion": "Libretas, journals, publicaciones y piezas editoriales",
+        "proceso": "Diseño + preprensa",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-003",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-003",
+        "familia": "Diseño",
+        "servicio": "Diseño para redes sociales",
+        "descripcion": "Piezas y sistemas gráficos para comunicación digital",
+        "proceso": "Diseño digital",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-004",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-004",
+        "familia": "Digital",
+        "servicio": "Páginas web",
+        "descripcion": "Diseño y desarrollo de sitios web",
+        "proceso": "Diseño / desarrollo",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-005",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-005",
+        "familia": "Impresión",
+        "servicio": "Stickers y etiquetas",
+        "descripcion": "Producción en distintos adhesivos, formatos y acabados",
+        "proceso": "Impresión sobre adhesivos",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-006",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-006",
+        "familia": "Impresión",
+        "servicio": "Tatuajes temporales",
+        "descripcion": "Diseño y producción de tatuajes temporales",
+        "proceso": "Proceso por validar",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-007",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-007",
+        "familia": "Impresión",
+        "servicio": "Postales y prints",
+        "descripcion": "Piezas impresas en distintos papeles y formatos",
+        "proceso": "Impresión",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-008",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-008",
+        "familia": "Impresión",
+        "servicio": "Libretas y journals",
+        "descripcion": "Piezas editoriales encuadernadas",
+        "proceso": "Impresión / armado",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-009",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-009",
+        "familia": "Textil",
+        "servicio": "Playeras y sudaderas",
+        "descripcion": "Personalización y producción gráfica textil",
+        "proceso": "DTF / DTG",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-010",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-010",
+        "familia": "Textil",
+        "servicio": "Tote bags",
+        "descripcion": "Bolsas textiles personalizadas",
+        "proceso": "DTF / DTG",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-011",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-011",
+        "familia": "Acabados",
+        "servicio": "Hot stamping reactivo a tóner",
+        "descripcion": "Aplicación de foil reactivo sobre impresión compatible",
+        "proceso": "Hot stamping",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-012",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-012",
+        "familia": "Acabados",
+        "servicio": "Laminado texturizado en frío",
+        "descripcion": "Laminación con efecto táctil/texturizado",
+        "proceso": "Laminado en frío",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-013",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-013",
+        "familia": "Acabados",
+        "servicio": "Laminado holográfico térmico",
+        "descripcion": "Acabado holográfico aplicado por laminación térmica",
+        "proceso": "Laminado térmico",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-014",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-014",
+        "familia": "Acabados",
+        "servicio": "Adhesivo holográfico impreso",
+        "descripcion": "Impresión sobre material adhesivo holográfico",
+        "proceso": "Impresión adhesiva",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-015",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-015",
+        "familia": "Impresión",
+        "servicio": "Imanes personalizados",
+        "descripcion": "Imanes con diseños propios o de cliente",
+        "proceso": "Proceso por definir",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-016",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-016",
+        "familia": "Impresión",
+        "servicio": "Tarots y oráculos",
+        "descripcion": "Cartas, cajas, guías y componentes editoriales",
+        "proceso": "Impresión / acabado / armado",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "matriz:M-017",
+      "modulo": "matriz",
+      "campos": {
+        "codigo": "M-017",
+        "familia": "Acabados",
+        "servicio": "DTF UV",
+        "descripcion": "Transferencia UV para superficies compatibles",
+        "proceso": "DTF UV",
+        "materiales": "",
+        "formatos": "",
+        "lote_minimo": "",
+        "tiempo": "",
+        "criterio": "",
+        "metodo_precio": "Por cotizar",
+        "estado": "En definición",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:01",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "01",
+        "etapa": "Consulta / brief",
+        "que_ocurre": "Capturar necesidad, cantidades, formatos, fecha y presupuesto.",
+        "criterio_salida": "Brief completo y datos del cliente registrados.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:02",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "02",
+        "etapa": "Viabilidad",
+        "que_ocurre": "Confirmar capacidad, materiales, proveedor, tiempo y riesgos.",
+        "criterio_salida": "Se confirma que el trabajo puede producirse con calidad y plazo realistas.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:03",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "03",
+        "etapa": "Cotización",
+        "que_ocurre": "Calcular costo, precio, margen, condiciones y vigencia.",
+        "criterio_salida": "Cotización aprobada por responsable y enviada al cliente.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:04",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "04",
+        "etapa": "Aprobación y pago",
+        "que_ocurre": "Recibir visto bueno, artes finales y anticipo cuando aplique.",
+        "criterio_salida": "Aprobación escrita y comprobante registrados.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:05",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "05",
+        "etapa": "Preprensa / preparación",
+        "que_ocurre": "Revisar archivos, medidas, sangrados, tipografías y pruebas.",
+        "criterio_salida": "Archivo listo y prueba aprobada antes de producir.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:06",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "06",
+        "etapa": "Producción",
+        "que_ocurre": "Ejecutar proceso y registrar materiales, lotes y tiempos.",
+        "criterio_salida": "Producción completa conforme a ficha técnica.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:07",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "07",
+        "etapa": "Control de calidad",
+        "que_ocurre": "Revisar muestra, conteo, color, acabado, limpieza y empaque.",
+        "criterio_salida": "Lote aprobado; incidencias y reprocesos registrados.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:08",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "08",
+        "etapa": "Entrega",
+        "que_ocurre": "Empacar, documentar envío o entrega y confirmar recepción.",
+        "criterio_salida": "Cliente recibe pedido y existe evidencia de entrega.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:09",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "09",
+        "etapa": "Cierre",
+        "que_ocurre": "Cobrar saldo, emitir documentos, registrar costo real y aprendizaje.",
+        "criterio_salida": "Pedido cerrado en administración y métricas actualizadas.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "operacion:10",
+      "modulo": "operacion",
+      "campos": {
+        "paso": "10",
+        "etapa": "Postventa",
+        "que_ocurre": "Solicitar retroalimentación y atender garantías/incidencias.",
+        "criterio_salida": "Caso cerrado y mejora incorporada al proceso si corresponde.",
+        "responsable": "",
+        "registro": "",
+        "estado": "Pendiente",
+        "notas": ""
+      }
+    },
+    {
+      "id": "priorizacion:MCC",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Mono Cromat & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "priorizacion:SIM",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Simbol & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "priorizacion:EST",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Estat & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "priorizacion:CRN",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Cron & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "priorizacion:ICO",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Icon & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "priorizacion:PER",
+      "modulo": "priorizacion",
+      "campos": {
+        "marca": "Perifer & Co.",
+        "demanda": "",
+        "economia": "",
+        "operacion": "",
+        "producto": "",
+        "diferenciacion": "",
+        "puntaje_ponderado": "",
+        "riesgo_critico": "",
+        "lectura": "Completar evaluación",
+        "evidencia": ""
+      }
+    },
+    {
+      "id": "equilibrio:MCC",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Mono Cromat & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    },
+    {
+      "id": "equilibrio:SIM",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Simbol & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    },
+    {
+      "id": "equilibrio:EST",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Estat & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    },
+    {
+      "id": "equilibrio:CRN",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Cron & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    },
+    {
+      "id": "equilibrio:ICO",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Icon & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    },
+    {
+      "id": "equilibrio:PER",
+      "modulo": "equilibrio",
+      "campos": {
+        "marca": "Perifer & Co.",
+        "fijos_asignados": "",
+        "margen_medio": "",
+        "ventas_equilibrio": "",
+        "contribucion_unidad": "",
+        "unidades_equilibrio": "",
+        "meta_ventas": "",
+        "contribucion_prevista": ""
+      }
+    }
+  ],
+  "guia": {
+    "instrucciones": [
+      {
+        "titulo": "1. Empieza por MARCAS",
+        "detalle": "Confirma el rol, mercado, audiencia, propuesta y responsable de cada marca. Lo precargado refleja lo conversado; completa lo que falta."
+      },
+      {
+        "titulo": "2. Registra el trabajo en CHECKLIST",
+        "detalle": "Cada pendiente debe tener responsable, estado, fecha y evidencia. Cambia el estado; no borres tareas. Añade filas si aparece trabajo nuevo."
+      },
+      {
+        "titulo": "3. Define el catálogo matriz",
+        "detalle": "CAT_MATRIZ reúne capacidades B2B y procesos de producción que Mono Cromat puede ofrecer o coordinar."
+      },
+      {
+        "titulo": "4. Construye el catálogo de cada marca",
+        "detalle": "CAT_MARCAS contiene productos, variantes, presentación, empaque, SKU y datos comerciales. Un producto puede tener varias variantes."
+      },
+      {
+        "titulo": "5. Costea antes de fijar precios",
+        "detalle": "COSTEO calcula un precio sugerido a partir de costos variables, comisiones y margen objetivo. Completa tasas e importes reales; no copies precios de otras marcas."
+      },
+      {
+        "titulo": "6. Separa fijos y variables",
+        "detalle": "GASTOS_FIJOS registra gastos recurrentes. El costo fijo mensual no se debe confundir con el costo variable unitario."
+      },
+      {
+        "titulo": "7. Documenta proveedores, operación y riesgos",
+        "detalle": "PROVEEDORES, OPERACION y RIESGOS evitan que el conocimiento viva solamente en tu cabeza o en conversaciones."
+      },
+      {
+        "titulo": "8. Registra decisiones",
+        "detalle": "DECISIONES deja trazabilidad: qué se decidió, por qué, quién lo aprobó y qué cambia en los demás archivos."
+      },
+      {
+        "titulo": "9. Revisa el PANEL cada semana",
+        "detalle": "El panel cuenta tareas por estado. Es una fotografía de avance, no una autorización automática para lanzar."
+      }
+    ],
+    "reglas": [
+      {
+        "titulo": "Una marca se evalúa por sí misma.",
+        "detalle": "El público puede no conocer la casa matriz ni las otras marcas. Cada marca debe cumplir sus propios estándares."
+      },
+      {
+        "titulo": "No se publica un producto sin costeo.",
+        "detalle": "Debe existir costo unitario completo, precio revisado, margen calculado y canal de venta definido."
+      },
+      {
+        "titulo": "No se lanza sin prototipo aprobado.",
+        "detalle": "Debe revisarse físicamente el producto, su acabado, legibilidad, empaque y resistencia de uso."
+      },
+      {
+        "titulo": "No se usa propiedad ajena sin autorización.",
+        "detalle": "En especial personajes, logos, fotografías, nombres de artistas, franquicias y signos oficiales de transporte."
+      },
+      {
+        "titulo": "No se lanza todo al mismo tiempo.",
+        "detalle": "Primero un piloto controlado; mide producción, entregas, devoluciones, margen y carga de trabajo antes de escalar."
+      },
+      {
+        "titulo": "No se marca 'Hecho' sin evidencia.",
+        "detalle": "Adjunta archivo, foto, enlace, cotización, muestra aprobada o documento que demuestre el cierre."
+      }
+    ],
+    "estados": [
+      {
+        "titulo": "Pendiente",
+        "detalle": "No se ha comenzado."
+      },
+      {
+        "titulo": "En curso",
+        "detalle": "Alguien está trabajando activamente en ello."
+      },
+      {
+        "titulo": "En revisión",
+        "detalle": "Existe un entregable, pero falta aprobación o prueba."
+      },
+      {
+        "titulo": "Bloqueado",
+        "detalle": "No puede avanzar por una dependencia o problema."
+      },
+      {
+        "titulo": "Hecho",
+        "detalle": "Cumple el criterio de cierre y tiene evidencia."
+      },
+      {
+        "titulo": "No aplica",
+        "detalle": "Se descartó con una razón documentada."
+      }
+    ]
+  },
+  "criterios": [
+    {
+      "criterio": "Evidencia de demanda",
+      "peso": "25%",
+      "detalle": "Compradores identificables, conversaciones, pedidos de prueba o señales de interés verificables."
+    },
+    {
+      "criterio": "Economía unitaria",
+      "peso": "25%",
+      "detalle": "Costo real, precio defendible, comisiones contempladas y margen de contribución suficiente."
+    },
+    {
+      "criterio": "Facilidad operativa",
+      "peso": "20%",
+      "detalle": "Capacidad, tiempos, proveedores, empaque y entrega sin saturar la operación."
+    },
+    {
+      "criterio": "Preparación del producto",
+      "peso": "20%",
+      "detalle": "Prototipo aprobado, ficha técnica, presentación, SKU y fotos reales."
+    },
+    {
+      "criterio": "Diferenciación y control de derechos",
+      "peso": "10%",
+      "detalle": "Propuesta clara y control/autorización de los elementos creativos y signos que se venderán."
+    }
+  ]
+}
