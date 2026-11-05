@@ -1,57 +1,158 @@
-import {useEffect,useMemo,useState} from 'react'
-import {sb} from './supabase'
-const EST=['Pendiente','En curso','En revisión','Bloqueado','Hecho','No aplica']
-const REST=['Abierto','Mitigado','Cerrado']
-const hoy=new Date().toISOString().slice(0,10)
-const pct=(a,b)=>b?Math.round(100*a/b):0
-const cerrada=i=>['Hecho','No aplica'].includes(i.estado)
-function Login(){
-  const [e,setE]=useState(''),[p,setP]=useState(''),[err,setErr]=useState('')
-  const go=async ev=>{ev.preventDefault();const{error}=await sb.auth.signInWithPassword({email:e,password:p});if(error)setErr('No se pudo entrar: '+error.message)}
-  return <form className="login" onSubmit={go}><h1>Mono Cromat<br/>Preapertura</h1>
-    <input type="email" placeholder="Correo" value={e} onChange={x=>setE(x.target.value)} required/>
-    <input type="password" placeholder="Contraseña" value={p} onChange={x=>setP(x.target.value)} required/>
-    <button className="go">Entrar</button>{err&&<small>{err}</small>}</form>
+import { useCallback, useEffect, useState } from 'react'
+import { AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react'
+import { sb } from './supabase.js'
+import { LOCAL_KEY, readLocalData, writeLocalData } from './lib/local-data.js'
+import { fetchAll } from './lib/supabase-data.js'
+import Shell from './components/Shell.jsx'
+import Dashboard from './components/Dashboard.jsx'
+import Checklist from './components/Checklist.jsx'
+import Brands from './components/Brands.jsx'
+import Risks from './components/Risks.jsx'
+import Login from './components/Login.jsx'
+import { BrandEditor, RiskEditor, TaskEditor } from './components/Editors.jsx'
+import { AppLogo } from './components/common.jsx'
+
+const EMPTY_TASK_FILTERS = { search: '', brand: '', status: '', priority: '', attention: '' }
+const EMPTY_RISK_FILTERS = { search: '', status: '' }
+
+function Loading({ error, onRetry }) {
+  return <div className="loading-page"><AppLogo />{error ? <div className="loading-box"><span><AlertCircle size={22} /></span><h1>No pudimos cargar tu espacio</h1><p>{error}</p><button type="button" className="primary-button" onClick={onRetry}><RefreshCw size={16} /> Intentar de nuevo</button></div> : <div className="loading-box"><span className="loading-spinner" /><h1>Preparando tu espacio...</h1><p>Un momento, estamos reuniendo todo.</p></div>}</div>
 }
-export default function App(){
-  const [s,setS]=useState(undefined),[tab,setTab]=useState('Panel'),[m,setM]=useState([]),[t,setT]=useState([]),[r,setR]=useState([])
-  const [fm,setFm]=useState(''),[fe,setFe]=useState(''),[q,setQ]=useState('')
-  useEffect(()=>{sb.auth.getSession().then(({data})=>setS(data.session));const{data}=sb.auth.onAuthStateChange((_,x)=>setS(x));return()=>data.subscription.unsubscribe()},[])
-  useEffect(()=>{if(!s)return;const g=n=>sb.from(n).select('*').order('id');Promise.all([g('marcas'),g('tareas'),g('riesgos')]).then(([a,b,c])=>{setM(a.data||[]);setT(b.data||[]);setR(c.data||[])})},[s])
-  const up=(tb,set)=>(id,p)=>{set(x=>x.map(i=>i.id===id?{...i,...p}:i));sb.from(tb).update(p).eq('id',id).then(()=>{})}
-  const ut=up('tareas',setT),ur=up('riesgos',setR)
-  const st=useMemo(()=>m.map(b=>{const x=t.filter(i=>i.marca===b.nombre),h=x.filter(i=>i.estado==='Hecho')
-    return{...b,n:x.length,h:h.length,p:pct(h.length,x.length),bl:x.filter(i=>i.estado==='Bloqueado').length,
-      ve:x.filter(i=>i.fecha&&i.fecha<hoy&&!cerrada(i)).length,se:h.filter(i=>!i.evidencia).length}}),[m,t])
-  const luz=b=>b.bl||b.se||b.ve?'rojo':b.p===100?'verde':'ambar'
-  if(s===undefined)return null
-  if(!s)return <Login/>
-  const lista=t.filter(i=>(!fm||i.marca===fm)&&(!fe||i.estado===fe)&&(!q||(i.tarea+i.frente).toLowerCase().includes(q.toLowerCase())))
-  const K=[['Tareas',t.length],['Hechas',t.filter(i=>i.estado==='Hecho').length],['Bloqueadas',t.filter(i=>i.estado==='Bloqueado').length],['Riesgos abiertos',r.filter(i=>i.estado==='Abierto').length]]
-  return <><header><strong>Mono Cromat</strong>
-    {['Panel','Checklist','Riesgos'].map(x=><button key={x} className={tab===x?'on':''} onClick={()=>setTab(x)}>{x}</button>)}
-    <button onClick={()=>sb.auth.signOut()}>Salir</button></header>
-  <main>
-  {tab==='Panel'&&<><div className="kpis">{K.map(([k,v])=><div key={k}><b>{v}</b>{k}</div>)}</div>
-    {st.map(b=><div className="card" key={b.id}><div className="row"><i className={'dot '+luz(b)}/><h3>{b.nombre}</h3><span>{b.h} de {b.n} ({b.p}%)</span></div>
-      <div className="bar"><u style={{width:b.p+'%'}}/></div>
-      <small>{b.bl} bloqueadas, {b.ve} vencidas, {b.se} "Hecho" sin evidencia</small></div>)}
-    <p className="nota">Checklist completo no equivale a autorización de apertura. Antes del Go / No-Go revisa prototipos físicos, números reales, permisos y capacidad.</p></>}
-  {tab==='Checklist'&&<><div className="filtros">
-    <select value={fm} onChange={e=>setFm(e.target.value)}><option value="">Todas las marcas</option>{m.map(b=><option key={b.id}>{b.nombre}</option>)}</select>
-    <select value={fe} onChange={e=>setFe(e.target.value)}><option value="">Todos los estados</option>{EST.map(x=><option key={x}>{x}</option>)}</select>
-    <input placeholder="Buscar tarea" value={q} onChange={e=>setQ(e.target.value)}/></div>
-    {lista.map(i=><div className="card" key={i.id}><div className="meta"><span>{i.id}</span><span>{i.marca}</span><span>{i.frente}</span></div>
-      <h3>{i.tarea}</h3><p>{i.criterio}</p>
-      <div className="grid"><select value={i.estado} onChange={e=>ut(i.id,{estado:e.target.value})}>{EST.map(x=><option key={x}>{x}</option>)}</select>
-      <input defaultValue={i.responsable} placeholder="Responsable" onBlur={e=>ut(i.id,{responsable:e.target.value})}/>
-      <input type="date" defaultValue={i.fecha||''} onChange={e=>ut(i.id,{fecha:e.target.value||null})}/>
-      <input defaultValue={i.evidencia} placeholder="Evidencia o enlace" onBlur={e=>ut(i.id,{evidencia:e.target.value})}/></div></div>)}
-    {!lista.length&&<p>No hay tareas con esos filtros.</p>}</>}
-  {tab==='Riesgos'&&r.map(i=><div className="card" key={i.id}><div className="meta"><span>{i.id}</span><span>{i.area}</span></div>
-    <h3>{i.riesgo}</h3><p>{i.mitigacion}</p>
-    <div className="grid"><span className="tag">Probabilidad {i.probabilidad}</span><span className="tag">Impacto {i.impacto}</span>
-    <select value={i.estado} onChange={e=>ur(i.id,{estado:e.target.value})}>{REST.map(x=><option key={x}>{x}</option>)}</select>
-    <input defaultValue={i.responsable} placeholder="Responsable" onBlur={e=>ur(i.id,{responsable:e.target.value})}/></div></div>)}
-  </main></>
+
+export default function App() {
+  const [authReady, setAuthReady] = useState(!sb)
+  const [session, setSession] = useState(null)
+  const [sessionError, setSessionError] = useState('')
+  const [local, setLocal] = useState(!sb)
+  const [data, setData] = useState(null)
+  const [loadError, setLoadError] = useState('')
+  const [loadVersion, setLoadVersion] = useState(0)
+  const [page, setPage] = useState('panel')
+  const [taskFilters, setTaskFilters] = useState(EMPTY_TASK_FILTERS)
+  const [riskFilters, setRiskFilters] = useState(EMPTY_RISK_FILTERS)
+  const [modal, setModal] = useState(null)
+  const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
+  const [toast, setToast] = useState(null)
+  const [online, setOnline] = useState(() => navigator.onLine)
+
+  useEffect(() => {
+    if (!sb) return undefined
+    let active = true
+    sb.auth.getSession().then(({ data: result, error }) => {
+      if (!active) return
+      if (error) setSessionError('No pudimos recuperar tu sesión. Intenta iniciar sesión de nuevo.')
+      setSession(result?.session || null)
+      setAuthReady(true)
+    }).catch(() => {
+      if (!active) return
+      setSessionError('No pudimos recuperar tu sesión. Revisa tu conexión.')
+      setAuthReady(true)
+    })
+    const { data: listener } = sb.auth.onAuthStateChange((_event, nextSession) => {
+      if (!active) return
+      setSession(nextSession)
+      setSessionError('')
+      setAuthReady(true)
+    })
+    return () => { active = false; listener.subscription.unsubscribe() }
+  }, [])
+
+  useEffect(() => {
+    const update = () => setOnline(navigator.onLine)
+    window.addEventListener('online', update)
+    window.addEventListener('offline', update)
+    return () => { window.removeEventListener('online', update); window.removeEventListener('offline', update) }
+  }, [])
+
+  useEffect(() => {
+    if (!local && !session) { setData(null); return undefined }
+    let active = true
+    setData(null)
+    setLoadError('')
+    if (local) {
+      try { setData(readLocalData()) } catch (error) { setLoadError(error.message || 'No pudimos acceder al almacenamiento local.') }
+    } else {
+      Promise.all([fetchAll(sb, 'marcas'), fetchAll(sb, 'tareas'), fetchAll(sb, 'riesgos')])
+        .then(([marcas, tareas, riesgos]) => { if (active) setData({ marcas, tareas, riesgos }) })
+        .catch(() => { if (active) setLoadError('Revisa tu conexión y la configuración de Supabase. Tus datos no se han modificado.') })
+    }
+    return () => { active = false }
+  }, [local, session, loadVersion])
+
+  useEffect(() => {
+    if (!local) return undefined
+    const handleStorage = event => {
+      if (event.key !== LOCAL_KEY) return
+      try { setData(readLocalData()) } catch (error) { setLoadError(error.message) }
+    }
+    window.addEventListener('storage', handleStorage)
+    return () => window.removeEventListener('storage', handleStorage)
+  }, [local])
+
+  useEffect(() => {
+    if (!toast) return undefined
+    const timeout = window.setTimeout(() => setToast(null), 3500)
+    return () => window.clearTimeout(timeout)
+  }, [toast])
+
+  const navigate = useCallback((nextPage, filters = {}) => {
+    if (nextPage === 'checklist') setTaskFilters({ ...EMPTY_TASK_FILTERS, ...filters })
+    if (nextPage === 'riesgos') setRiskFilters({ ...EMPTY_RISK_FILTERS, ...filters })
+    setPage(nextPage)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  const openModal = (type, item = null) => { setSaveError(''); setModal({ type, item }) }
+  const closeModal = () => { if (!saving) { setModal(null); setSaveError('') } }
+
+  const save = async (table, record, isNew) => {
+    setSaving(true)
+    setSaveError('')
+    try {
+      if (local) {
+        const collection = isNew ? [...data[table], record] : data[table].map(item => item.id === record.id ? record : item)
+        const next = { ...data, [table]: collection }
+        writeLocalData(next)
+        setData(next)
+      } else {
+        const query = isNew ? sb.from(table).insert(record) : sb.from(table).update(record).eq('id', record.id)
+        const { data: saved, error } = await query.select().single()
+        if (error) throw error
+        setData(current => ({ ...current, [table]: isNew ? [...current[table], saved] : current[table].map(item => item.id === saved.id ? saved : item) }))
+      }
+      setModal(null)
+      setToast({ kind: 'success', message: isNew ? 'Agregado correctamente.' : 'Cambios guardados correctamente.' })
+    } catch {
+      setSaveError(local ? 'No se pudieron guardar los cambios en este navegador. Revisa el almacenamiento disponible e inténtalo de nuevo.' : 'No se pudieron guardar los cambios. Revisa tu conexión y permisos e inténtalo de nuevo.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const exit = async () => {
+    if (local) { setLocal(false); setPage('panel'); return }
+    try {
+      const { error } = await sb.auth.signOut()
+      if (error) throw error
+      setPage('panel')
+    } catch {
+      setToast({ kind: 'error', message: 'No se pudo cerrar la sesión. Inténtalo de nuevo.' })
+    }
+  }
+
+  if (!authReady) return <Loading />
+  if (!local && !session) return <Login supabase={sb} onDemo={() => setLocal(true)} sessionError={sessionError} />
+  if (!data || loadError) return <Loading error={loadError} onRetry={() => setLoadVersion(version => version + 1)} />
+
+  return <Shell page={page} onNavigate={navigate} local={local} email={session?.user?.email} canExit={Boolean(sb)} onExit={exit} online={online}>
+    {page === 'panel' && <Dashboard data={data} local={local} online={online} onNavigate={navigate} onOpenTask={task => openModal('task', task)} onNewTask={() => openModal('task')} />}
+    {page === 'checklist' && <Checklist data={data} local={local} online={online} filters={taskFilters} onFiltersChange={setTaskFilters} onOpenTask={task => openModal('task', task)} onNewTask={() => openModal('task')} />}
+    {page === 'marcas' && <Brands data={data} local={local} online={online} onNavigate={navigate} onEditBrand={brand => openModal('brand', brand)} />}
+    {page === 'riesgos' && <Risks data={data} local={local} online={online} filters={riskFilters} onFiltersChange={setRiskFilters} onOpenRisk={risk => openModal('risk', risk)} onNewRisk={() => openModal('risk')} />}
+    {modal?.type === 'task' && <TaskEditor key={`task-${modal.item?.id || 'new'}`} task={modal.item} brands={data.marcas} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('tareas', record, isNew)} />}
+    {modal?.type === 'risk' && <RiskEditor key={`risk-${modal.item?.id || 'new'}`} risk={modal.item} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('riesgos', record, isNew)} />}
+    {modal?.type === 'brand' && <BrandEditor key={`brand-${modal.item.id}`} brand={modal.item} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('marcas', record, isNew)} />}
+    {toast && <div className={`toast ${toast.kind === 'error' ? 'toast-error' : ''}`} role={toast.kind === 'error' ? 'alert' : 'status'}>{toast.kind === 'error' ? <AlertCircle size={18} /> : <CheckCircle2 size={18} />}{toast.message}</div>}
+  </Shell>
 }
