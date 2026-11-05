@@ -1,0 +1,31 @@
+import test from 'node:test'
+import assert from 'node:assert/strict'
+import { fetchAll } from '../src/lib/supabase-data.js'
+
+function mockClient(respond) {
+  return { from: table => ({ select: (_fields, options) => ({ order: () => ({ range: (from, to) => respond({ table, options, from, to }) }) }) }) }
+}
+
+test('recupera todas las filas aunque el servidor tenga un límite de página menor', async () => {
+  const records = [{ id: '1' }, { id: '2' }, { id: '3' }]
+  const calls = []
+  const client = mockClient(({ from, options }) => {
+    calls.push(from)
+    assert.equal(options.count, 'exact')
+    return { data: records.slice(from, from + 1), error: null, count: records.length }
+  })
+  assert.deepEqual(await fetchAll(client, 'tareas', 1000), records)
+  assert.deepEqual(calls, [0, 1, 2])
+})
+
+test('señala errores y respuestas incompletas en lugar de mostrar datos parciales', async () => {
+  const error = new Error('Sin permiso')
+  await assert.rejects(fetchAll(mockClient(() => ({ data: null, error, count: null })), 'tareas'), /Sin permiso/)
+  await assert.rejects(fetchAll(mockClient(({ from }) => ({ data: from ? [] : [{ id: '1' }], error: null, count: 2 })), 'tareas'), /todos los registros/)
+})
+
+test('sin conteo explícito utiliza el tamaño recibido para detectar la última página', async () => {
+  const rows = [{ id: '1' }, { id: '2' }, { id: '3' }]
+  const client = mockClient(({ from, to }) => ({ data: rows.slice(from, to + 1), error: null, count: null }))
+  assert.deepEqual(await fetchAll(client, 'tareas', 2), rows)
+})
