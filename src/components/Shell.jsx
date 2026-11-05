@@ -1,4 +1,4 @@
-import { CalendarDays, ClipboardList, Grid2X2, LayoutDashboard, LogOut, ShieldAlert } from 'lucide-react'
+import { Boxes, CalendarDays, ClipboardList, Grid2X2, LayoutDashboard, LogOut, ShieldAlert } from 'lucide-react'
 import { AppLogo } from './common.jsx'
 
 const NAV_ITEMS = [
@@ -6,6 +6,7 @@ const NAV_ITEMS = [
   { id: 'checklist', label: 'Checklist', icon: ClipboardList },
   { id: 'marcas', label: 'Marcas', icon: Grid2X2 },
   { id: 'riesgos', label: 'Riesgos', icon: ShieldAlert },
+  { id: 'sistema', label: 'Más áreas', icon: Boxes },
 ]
 
 export default function Shell({ page, onNavigate, local, email, canExit, onExit, online, children }) {

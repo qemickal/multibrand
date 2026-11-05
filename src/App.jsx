@@ -2,12 +2,14 @@ import { useCallback, useEffect, useState } from 'react'
 import { AlertCircle, CheckCircle2, RefreshCw } from 'lucide-react'
 import { sb } from './supabase.js'
 import { LOCAL_KEY, readLocalData, writeLocalData } from './lib/local-data.js'
-import { fetchAll } from './lib/supabase-data.js'
+import { fetchAll, fetchWorkbookRecords } from './lib/supabase-data.js'
 import Shell from './components/Shell.jsx'
 import Dashboard from './components/Dashboard.jsx'
 import Checklist from './components/Checklist.jsx'
 import Brands from './components/Brands.jsx'
 import Risks from './components/Risks.jsx'
+import SystemAreas from './components/SystemAreas.jsx'
+import RecordEditor from './components/RecordEditor.jsx'
 import Login from './components/Login.jsx'
 import { BrandEditor, RiskEditor, TaskEditor } from './components/Editors.jsx'
 import { AppLogo } from './components/common.jsx'
@@ -28,6 +30,8 @@ export default function App() {
   const [loadError, setLoadError] = useState('')
   const [loadVersion, setLoadVersion] = useState(0)
   const [page, setPage] = useState('panel')
+  const [systemArea, setSystemArea] = useState(null)
+  const [schemaReady, setSchemaReady] = useState(!sb)
   const [taskFilters, setTaskFilters] = useState(EMPTY_TASK_FILTERS)
   const [riskFilters, setRiskFilters] = useState(EMPTY_RISK_FILTERS)
   const [modal, setModal] = useState(null)
@@ -71,10 +75,10 @@ export default function App() {
     setData(null)
     setLoadError('')
     if (local) {
-      try { setData(readLocalData()) } catch (error) { setLoadError(error.message || 'No pudimos acceder al almacenamiento local.') }
+      try { setSchemaReady(true); setData(readLocalData()) } catch (error) { setLoadError(error.message || 'No pudimos acceder al almacenamiento local.') }
     } else {
-      Promise.all([fetchAll(sb, 'marcas'), fetchAll(sb, 'tareas'), fetchAll(sb, 'riesgos')])
-        .then(([marcas, tareas, riesgos]) => { if (active) setData({ marcas, tareas, riesgos }) })
+      Promise.all([fetchAll(sb, 'marcas'), fetchAll(sb, 'tareas'), fetchAll(sb, 'riesgos'), fetchWorkbookRecords(sb)])
+        .then(([marcas, tareas, riesgos, extra]) => { if (active) { setSchemaReady(extra.ready); setData({ marcas, tareas, riesgos, registros: extra.records }) } })
         .catch(() => { if (active) setLoadError('Revisa tu conexión y la configuración de Supabase. Tus datos no se han modificado.') })
     }
     return () => { active = false }
@@ -84,7 +88,7 @@ export default function App() {
     if (!local) return undefined
     const handleStorage = event => {
       if (event.key !== LOCAL_KEY) return
-      try { setData(readLocalData()) } catch (error) { setLoadError(error.message) }
+      try { setSchemaReady(true); setData(readLocalData()) } catch (error) { setLoadError(error.message) }
     }
     window.addEventListener('storage', handleStorage)
     return () => window.removeEventListener('storage', handleStorage)
@@ -99,9 +103,12 @@ export default function App() {
   const navigate = useCallback((nextPage, filters = {}) => {
     if (nextPage === 'checklist') setTaskFilters({ ...EMPTY_TASK_FILTERS, ...filters })
     if (nextPage === 'riesgos') setRiskFilters({ ...EMPTY_RISK_FILTERS, ...filters })
+    if (nextPage === 'sistema') setSystemArea(filters.area || null)
     setPage(nextPage)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [])
+
+  const selectSystemArea = id => { setSystemArea(id); window.scrollTo({ top: 0, behavior: 'smooth' }) }
 
   const openModal = (type, item = null) => { setSaveError(''); setModal({ type, item }) }
   const closeModal = () => { if (!saving) { setModal(null); setSaveError('') } }
@@ -116,7 +123,8 @@ export default function App() {
         writeLocalData(next)
         setData(next)
       } else {
-        const query = isNew ? sb.from(table).insert(record) : sb.from(table).update(record).eq('id', record.id)
+        const remoteTable = table === 'registros' ? 'registros_preapertura' : table
+        const query = isNew ? sb.from(remoteTable).insert(record) : sb.from(remoteTable).update(record).eq('id', record.id)
         const { data: saved, error } = await query.select().single()
         if (error) throw error
         setData(current => ({ ...current, [table]: isNew ? [...current[table], saved] : current[table].map(item => item.id === saved.id ? saved : item) }))
@@ -125,6 +133,28 @@ export default function App() {
       setToast({ kind: 'success', message: isNew ? 'Agregado correctamente.' : 'Cambios guardados correctamente.' })
     } catch {
       setSaveError(local ? 'No se pudieron guardar los cambios en este navegador. Revisa el almacenamiento disponible e inténtalo de nuevo.' : 'No se pudieron guardar los cambios. Revisa tu conexión y permisos e inténtalo de nuevo.')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const deleteRecord = async record => {
+    setSaving(true)
+    setSaveError('')
+    try {
+      if (local) {
+        const next = { ...data, registros: data.registros.filter(item => item.id !== record.id) }
+        writeLocalData(next)
+        setData(next)
+      } else {
+        const { data: removed, error } = await sb.from('registros_preapertura').delete().eq('id', record.id).select('id').single()
+        if (error || !removed) throw error || new Error('No se confirmó la eliminación')
+        setData(current => ({ ...current, registros: current.registros.filter(item => item.id !== record.id) }))
+      }
+      setModal(null)
+      setToast({ kind: 'success', message: 'Registro eliminado.' })
+    } catch {
+      setSaveError(local ? 'No se pudo eliminar el registro en este navegador. Inténtalo de nuevo.' : 'No se pudo eliminar el registro. Revisa tu conexión y permisos.')
     } finally {
       setSaving(false)
     }
@@ -146,13 +176,15 @@ export default function App() {
   if (!data || loadError) return <Loading error={loadError} onRetry={() => setLoadVersion(version => version + 1)} />
 
   return <Shell page={page} onNavigate={navigate} local={local} email={session?.user?.email} canExit={Boolean(sb)} onExit={exit} online={online}>
-    {page === 'panel' && <Dashboard data={data} local={local} online={online} onNavigate={navigate} onOpenTask={task => openModal('task', task)} onNewTask={() => openModal('task')} />}
+    {page === 'panel' && <Dashboard data={data} local={local} online={online} schemaReady={schemaReady} onNavigate={navigate} onOpenTask={task => openModal('task', task)} onNewTask={() => openModal('task')} />}
     {page === 'checklist' && <Checklist data={data} local={local} online={online} filters={taskFilters} onFiltersChange={setTaskFilters} onOpenTask={task => openModal('task', task)} onNewTask={() => openModal('task')} />}
     {page === 'marcas' && <Brands data={data} local={local} online={online} onNavigate={navigate} onEditBrand={brand => openModal('brand', brand)} />}
     {page === 'riesgos' && <Risks data={data} local={local} online={online} filters={riskFilters} onFiltersChange={setRiskFilters} onOpenRisk={risk => openModal('risk', risk)} onNewRisk={() => openModal('risk')} />}
-    {modal?.type === 'task' && <TaskEditor key={`task-${modal.item?.id || 'new'}`} task={modal.item} brands={data.marcas} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('tareas', record, isNew)} />}
-    {modal?.type === 'risk' && <RiskEditor key={`risk-${modal.item?.id || 'new'}`} risk={modal.item} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('riesgos', record, isNew)} />}
-    {modal?.type === 'brand' && <BrandEditor key={`brand-${modal.item.id}`} brand={modal.item} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('marcas', record, isNew)} />}
+    {page === 'sistema' && <SystemAreas selected={systemArea} onSelect={selectSystemArea} data={data} onOpenRecord={(moduleId, item = null) => { setSaveError(''); setModal({ type: 'record', moduleId, item }) }} local={local} online={online} schemaReady={schemaReady} />}
+    {modal?.type === 'task' && <TaskEditor key={`task-${modal.item?.id || 'new'}`} task={modal.item} brands={data.marcas} extended={schemaReady} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('tareas', record, isNew)} />}
+    {modal?.type === 'risk' && <RiskEditor key={`risk-${modal.item?.id || 'new'}`} risk={modal.item} extended={schemaReady} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('riesgos', record, isNew)} />}
+    {modal?.type === 'brand' && <BrandEditor key={`brand-${modal.item.id}`} brand={modal.item} extended={schemaReady} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('marcas', record, isNew)} />}
+    {modal?.type === 'record' && <RecordEditor key={`record-${modal.moduleId}-${modal.item?.id || 'new'}`} moduleId={modal.moduleId} record={modal.item} brands={data.marcas} saving={saving} error={saveError} onClose={closeModal} onSave={(record, isNew) => save('registros', record, isNew)} onDelete={deleteRecord} />}
     {toast && <div className={`toast ${toast.kind === 'error' ? 'toast-error' : ''}`} role={toast.kind === 'error' ? 'alert' : 'status'}>{toast.kind === 'error' ? <AlertCircle size={18} /> : <CheckCircle2 size={18} />}{toast.message}</div>}
   </Shell>
 }

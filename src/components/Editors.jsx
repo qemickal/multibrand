@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AlertCircle, ClipboardList, Grid2X2, ShieldAlert, X } from 'lucide-react'
 import { createId, PRIORITIES, RISK_STATUSES, sortBrands, TASK_STATUSES, validateRisk, validateTask } from '../lib/workspace.js'
 
-function ModalFrame({ title, eyebrow, icon: Icon, onClose, saving, children, onSubmit, submitLabel }) {
+export function ModalFrame({ title, eyebrow, icon: Icon, onClose, saving, children, onSubmit, submitLabel }) {
   const panel = useRef(null)
   const closeRef = useRef(onClose)
   const savingRef = useRef(saving)
@@ -44,30 +44,30 @@ function ModalFrame({ title, eyebrow, icon: Icon, onClose, saving, children, onS
   </div>
 }
 
-function FormError({ children }) {
+export function FormError({ children }) {
   const errorRef = useRef(null)
   useEffect(() => { if (children) errorRef.current?.focus() }, [children])
   return children ? <div className="form-error" role="alert" tabIndex={-1} ref={errorRef}><AlertCircle size={17} />{children}</div> : null
 }
 
-function Field({ label, name, value, onChange, required, children, hint, ...props }) {
+export function Field({ label, name, value, onChange, required, children, hint, ...props }) {
   return <label className="form-field"><span>{label}{required && <b> *</b>}</span>{children || <input name={name} value={value ?? ''} onChange={onChange} {...props} />}{hint && <small>{hint}</small>}</label>
 }
 
-function TextArea({ name, value, onChange, rows = 3, ...props }) {
+export function TextArea({ name, value, onChange, rows = 3, ...props }) {
   return <textarea name={name} value={value ?? ''} onChange={onChange} rows={rows} {...props} />
 }
 
-export function TaskEditor({ task, brands, onClose, onSave, saving, error }) {
+export function TaskEditor({ task, brands, onClose, onSave, saving, error, extended = true }) {
   const isNew = !task
   const [form, setForm] = useState(() => task ? { ...task, estado: task.estado || 'Pendiente', prioridad: task.prioridad || 'Alta', fecha: task.fecha || '' } : {
-    id: createId('T'), marca: sortBrands(brands)[0]?.nombre || '', fase: '', frente: '', tarea: '', criterio: '', responsable: '', estado: 'Pendiente', prioridad: 'Alta', fecha: '', evidencia: '', notas: '',
+    id: createId('T'), marca: sortBrands(brands)[0]?.nombre || '', alcance: '', dependencia: '', fase: '', frente: '', tarea: '', criterio: '', responsable: '', estado: 'Pendiente', prioridad: 'Alta', fecha: '', evidencia: '', notas: '',
   })
   const [validationError, setValidationError] = useState('')
   const update = event => { setValidationError(''); setForm(current => ({ ...current, [event.target.name]: event.target.value })) }
   const submit = event => {
     event.preventDefault()
-    const fields = ['id', 'marca', 'fase', 'frente', 'tarea', 'criterio', 'responsable', 'estado', 'prioridad', 'fecha', 'evidencia', 'notas']
+    const fields = ['id', 'marca', 'fase', 'frente', 'tarea', 'criterio', 'responsable', 'estado', 'prioridad', 'fecha', 'evidencia', 'notas', ...(extended ? ['alcance', 'dependencia'] : [])]
     const record = Object.fromEntries(fields.map(field => [field, typeof form[field] === 'string' ? form[field].trim() : form[field] ?? '']))
     record.fecha = record.fecha || null
     const message = validateTask(record)
@@ -93,18 +93,20 @@ export function TaskEditor({ task, brands, onClose, onSave, saving, error }) {
     <Field label="Evidencia o enlace" name="evidencia" value={form.evidencia} onChange={update} required={form.estado === 'Hecho'} placeholder="Enlace o descripción de la evidencia" hint="Necesaria para marcar la tarea como hecha." />
     <Field label="Notas" required={form.estado === 'No aplica'} hint="Si la tarea no aplica, documenta aquí la razón."><TextArea name="notas" value={form.notas} onChange={update} placeholder="Agrega contexto o una razón" /></Field>
     <Field label="Fase" name="fase" value={form.fase} onChange={update} placeholder="Ej. Preparación por marca" />
+    {extended && <><Field label="Alcance" name="alcance" value={form.alcance} onChange={update} placeholder="Casa matriz, marca u otro" /><Field label="Dependencia / bloqueador"><TextArea name="dependencia" value={form.dependencia} onChange={update} placeholder="¿De qué depende esta tarea?" /></Field></>}
   </ModalFrame>
 }
 
-export function RiskEditor({ risk, onClose, onSave, saving, error }) {
+export function RiskEditor({ risk, onClose, onSave, saving, error, extended = true }) {
   const isNew = !risk
   const [form, setForm] = useState(() => risk ? { ...risk, estado: risk.estado || 'Abierto', probabilidad: risk.probabilidad || 'Media', impacto: risk.impacto || 'Media' } : { id: createId('R'), area: '', riesgo: '', probabilidad: 'Media', impacto: 'Media', mitigacion: '', responsable: '', estado: 'Abierto' })
   const [validationError, setValidationError] = useState('')
   const update = event => { setValidationError(''); setForm(current => ({ ...current, [event.target.name]: event.target.value })) }
   const submit = event => {
     event.preventDefault()
-    const fields = ['id', 'area', 'riesgo', 'probabilidad', 'impacto', 'mitigacion', 'responsable', 'estado']
+    const fields = ['id', 'area', 'riesgo', 'probabilidad', 'impacto', 'mitigacion', 'responsable', 'estado', ...(extended ? ['fecha_revision', 'notas'] : [])]
     const record = Object.fromEntries(fields.map(field => [field, typeof form[field] === 'string' ? form[field].trim() : form[field] ?? '']))
+    if (extended) record.fecha_revision = record.fecha_revision || null
     const message = validateRisk(record)
     if (message) { setValidationError(message); return }
     setValidationError('')
@@ -120,20 +122,31 @@ export function RiskEditor({ risk, onClose, onSave, saving, error }) {
     </div>
     <Field label="Acción de mitigación"><TextArea name="mitigacion" value={form.mitigacion} onChange={update} placeholder="¿Qué puedes hacer para prevenirlo o reducirlo?" /></Field>
     <div className="form-grid"><Field label="Responsable" name="responsable" value={form.responsable} onChange={update} placeholder="Nombre de la persona" /><Field label="Estado"><select name="estado" value={form.estado} onChange={update}>{RISK_STATUSES.map(status => <option key={status}>{status}</option>)}</select></Field></div>
+    {extended && <><Field label="Fecha revisión" name="fecha_revision" value={form.fecha_revision} onChange={update} type="date" /><Field label="Notas"><TextArea name="notas" value={form.notas} onChange={update} /></Field></>}
   </ModalFrame>
 }
 
-export function BrandEditor({ brand, onClose, onSave, saving, error }) {
-  const [form, setForm] = useState(() => ({ id: brand.id, nombre: brand.nombre, rol: brand.rol || '', mercado: brand.mercado || '' }))
+export function BrandEditor({ brand, onClose, onSave, saving, error, extended = true }) {
+  const [form, setForm] = useState(() => ({ ...brand }))
   const update = event => setForm(current => ({ ...current, [event.target.name]: event.target.value }))
   const submit = event => {
     event.preventDefault()
-    onSave({ ...form, rol: form.rol.trim(), mercado: form.mercado.trim() }, false)
+    const fields = ['id', 'nombre', 'rol', 'mercado', ...(extended ? ['modelo_negocio', 'descriptor', 'promesa', 'estado', 'propuesta_valor', 'tono_voz', 'canal_principal', 'responsable', 'notas'] : [])]
+    onSave(Object.fromEntries(fields.map(field => [field, typeof form[field] === 'string' ? form[field].trim() : form[field] ?? ''])), false)
   }
   return <ModalFrame title="Información de marca" eyebrow={brand.id} icon={Grid2X2} onClose={onClose} saving={saving} onSubmit={submit} submitLabel="Guardar cambios">
     <p className="modal-intro">Define qué hace esta marca y a quién se dirige.</p><FormError>{error}</FormError>
     <Field label="Nombre de la marca" name="nombre" value={form.nombre} readOnly hint="El nombre vincula la marca con sus tareas y no se puede cambiar aquí." />
-    <Field label="Rol o propuesta" name="rol" value={form.rol} onChange={update} placeholder="¿Qué hace esta marca?" />
-    <Field label="Mercado o público"><TextArea name="mercado" value={form.mercado} onChange={update} placeholder="¿A quién se dirige?" /></Field>
+    <Field label="Rol / universo" name="rol" value={form.rol} onChange={update} placeholder="¿Qué hace esta marca?" />
+    <Field label="Mercado / audiencia"><TextArea name="mercado" value={form.mercado} onChange={update} placeholder="¿A quién se dirige?" /></Field>
+    {extended && <>
+      <Field label="Modelo de negocio" name="modelo_negocio" value={form.modelo_negocio} onChange={update} />
+      <Field label="Descriptor de trabajo" name="descriptor" value={form.descriptor} onChange={update} />
+      <Field label="Promesa / diferenciador"><TextArea name="promesa" value={form.promesa} onChange={update} /></Field>
+      <div className="form-grid"><Field label="Estado" name="estado" value={form.estado} onChange={update} /><Field label="Responsable" name="responsable" value={form.responsable} onChange={update} /></div>
+      <Field label="Propuesta de valor afinada"><TextArea name="propuesta_valor" value={form.propuesta_valor} onChange={update} /></Field>
+      <div className="form-grid"><Field label="Tono de voz" name="tono_voz" value={form.tono_voz} onChange={update} /><Field label="Canal principal" name="canal_principal" value={form.canal_principal} onChange={update} /></div>
+      <Field label="Notas"><TextArea name="notas" value={form.notas} onChange={update} /></Field>
+    </>}
   </ModalFrame>
 }
